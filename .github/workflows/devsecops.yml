@@ -73,3 +73,4 @@ jobs:
           fail_action: false
           issue_title: false
           allow_issue_writing: false
+          artifact_name: 'zap-scan-results'
