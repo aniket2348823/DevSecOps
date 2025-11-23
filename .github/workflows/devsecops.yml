@@ -71,6 +71,4 @@ jobs:
         with:
           target: 'http://172.17.0.1:5000'
           fail_action: false
-          issue_title: false
-          allow_issue_writing: false
-          artifact_name: 'zap-scan-results'
+          cmd_options: '-a'
