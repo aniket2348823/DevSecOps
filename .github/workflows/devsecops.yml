@@ -9,6 +9,7 @@ permissions:
   actions: read
   security-events: write
   checks: write
+  statuses: write
 
 jobs:
   sast:
@@ -70,3 +71,5 @@ jobs:
         with:
           target: 'http://172.17.0.1:5000'
           fail_action: false
+          issue_title: false
+          allow_issue_writing: false
