@@ -1,6 +1,7 @@
 from flask import Flask, request
 
 app = Flask(__name__)
+# Routes for DevSecOps Demo
 
 # Vulnerability 1: Hardcoded Secret (Triggers Bandit)
 AWS_SECRET_KEY = "AKIAIOSFODNN7EXAMPLE"
