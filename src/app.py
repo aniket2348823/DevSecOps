@@ -30,9 +30,6 @@ def greet(name):
     </html>
     """
 
-    </body>
-    </html>
-    """
 
 @app.route('/')
 def home():
