@@ -31,7 +31,6 @@ def greet(name):
     </html>
     """
 
-
 @app.route('/')
 def home():
     return "Welcome to the DevSecOps Demo! Go to /greet/YourName to test."
