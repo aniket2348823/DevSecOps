@@ -1,15 +1,16 @@
 from flask import Flask, request
+from markupsafe import escape
+import os
 
 app = Flask(__name__)
-# Routes for DevSecOps Demo
 
-# Vulnerability 1: Hardcoded Secret (Triggers Bandit)
-AWS_SECRET_KEY = "AKIAIOSFODNN7EXAMPLE"
+# Read secret from environment (do NOT hardcode)
+AWS_SECRET_KEY = os.getenv("AWS_SECRET_KEY")
 
 @app.route('/greet/<name>')
 def greet(name):
-    # Vulnerability 2: XSS (Triggers OWASP ZAP)
-    # Returning the user input directly without sanitization
+    # Escape user input to prevent XSS
+    safe_name = escape(name)
     return f"""
     <!DOCTYPE html>
     <html>
@@ -25,7 +26,7 @@ def greet(name):
     <body>
         <div class="container">
             <h1>DevSecOps Demo</h1>
-            <p>Hello {name}</p>
+            <p>Hello {safe_name}</p>
         </div>
     </body>
     </html>
