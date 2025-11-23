@@ -38,6 +38,14 @@ def greet(name):
 def home():
     return "Welcome to the DevSecOps Demo! Go to /greet/YourName to test."
 
+@app.route('/robots.txt')
+def robots():
+    return "User-agent: *\nDisallow: /", 200, {'Content-Type': 'text/plain'}
+
+@app.route('/sitemap.xml')
+def sitemap():
+    return "<urlset><url><loc>http://localhost:5000/</loc></url></urlset>", 200, {'Content-Type': 'application/xml'}
+
 @app.after_request
 def add_security_headers(response):
     response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
