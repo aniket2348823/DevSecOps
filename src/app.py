@@ -30,5 +30,18 @@ def greet(name):
     </html>
     """
 
+    </body>
+    </html>
+    """
+
+@app.route('/')
+def home():
+    return "Welcome to the DevSecOps Demo! Go to /greet/YourName to test."
+
+@app.after_request
+def add_security_headers(response):
+    response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
+    return response
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
