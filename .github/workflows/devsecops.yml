@@ -83,7 +83,8 @@ jobs:
           docker pull zaproxy/zap-stable
           
           # Mount ONLY the report directory to /zap/wrk/ to avoid permission conflicts
-          docker run --rm --network="host" \
+          # Run as root (-u 0) to bypass permission issues on the mounted volume
+          docker run --rm --network="host" -u 0 \
             -v $(pwd)/zap_reports:/zap/wrk/:rw \
             zaproxy/zap-stable zap-baseline.py \
             -t http://172.17.0.1:5000 \
