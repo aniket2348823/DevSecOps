@@ -54,8 +54,9 @@ def add_security_headers(response):
     response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
     
     # Remove Server header to prevent version leakage
-    if 'Server' in response.headers:
-        del response.headers['Server']
+    # If we delete it, Werkzeug adds its own versioned header.
+    # So we set it to a generic value.
+    response.headers['Server'] = 'Apache'
     
     # Cache Control
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0'
