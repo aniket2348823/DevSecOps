@@ -75,21 +75,24 @@ jobs:
       
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          # Create a dedicated directory for reports to ensure clean permissions
-          mkdir -p zap_reports
-          chmod 777 zap_reports
-          
           echo "Pulling image: zaproxy/zap-stable"
           docker pull zaproxy/zap-stable
           
-          # Mount ONLY the report directory to /zap/wrk/ to avoid permission conflicts
-          # Run as root (-u 0) to bypass permission issues on the mounted volume
-          docker run --rm --network="host" -u 0 \
-            -v $(pwd)/zap_reports:/zap/wrk/:rw \
+          # Run ZAP without volume mounts to avoid permission issues
+          # Use a specific name to copy files later
+          docker run --name zap-scanner --network="host" \
             zaproxy/zap-stable zap-baseline.py \
             -t http://172.17.0.1:5000 \
             -r zap-report.html \
             -J zap-report.json || true
+            
+          # Copy reports from container to host
+          echo "Copying reports from container..."
+          docker cp zap-scanner:/zap/wrk/zap-report.html zap-report.html
+          docker cp zap-scanner:/zap/wrk/zap-report.json zap-report.json
+          
+          # Cleanup
+          docker rm zap-scanner
         continue-on-error: true
 
       - name: Upload ZAP Scan Results
@@ -98,5 +101,5 @@ jobs:
         with:
           name: zap-scan-results
           path: |
-            zap_reports/zap-report.html
-            zap_reports/zap-report.json
+            zap-report.html
+            zap-report.json
