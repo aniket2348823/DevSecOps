@@ -78,9 +78,11 @@ jobs:
           echo "Pulling image: zaproxy/zap-stable"
           docker pull zaproxy/zap-stable
           
-          # Run ZAP without volume mounts to avoid permission issues
-          # Use a specific name to copy files later
-          docker run --name zap-scanner --network="host" \
+          # Run ZAP with a NAMED VOLUME to avoid host permission issues
+          # This satisfies the "is mounted" check in zap-baseline.py
+          # Run as root (-u 0) to ensure write access
+          docker run --name zap-scanner --network="host" -u 0 \
+            -v zap-vol:/zap/wrk \
             zaproxy/zap-stable zap-baseline.py \
             -t http://172.17.0.1:5000 \
             -r zap-report.html \
