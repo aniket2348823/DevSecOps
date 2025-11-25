@@ -70,9 +70,9 @@ jobs:
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          # Create report files with write permissions for the container user
+          # Create report files and ensure FULL permissions for the Docker container user
           touch zap-report.html zap-report.json
-          chmod 666 zap-report.html zap-report.json
+          chmod -R 777 .
           
           echo "Pulling image: zaproxy/zap-stable"
           docker pull zaproxy/zap-stable

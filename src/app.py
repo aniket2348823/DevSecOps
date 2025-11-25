@@ -51,6 +51,17 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'"
     response.headers['Server'] = 'DevSecOps-Server' # Obfuscate server info
+    
+    # Cache Control
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    
+    # Spectre / Site Isolation
+    response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
+    response.headers['Cross-Origin-Embedder-Policy'] = 'require-corp'
+    response.headers['Cross-Origin-Resource-Policy'] = 'same-origin'
+    
     return response
 
 if __name__ == '__main__':
