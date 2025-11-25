@@ -65,4 +65,5 @@ def add_security_headers(response):
     return response
 
 if __name__ == '__main__':
+    print("--- STARTING SECURE APP V3 ---", flush=True)
     app.run(host='0.0.0.0', port=5000) # nosec

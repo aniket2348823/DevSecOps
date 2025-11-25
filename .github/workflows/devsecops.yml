@@ -68,16 +68,23 @@ jobs:
           docker logs app
           exit 1
 
+      - name: Verify App Security Headers
+        run: |
+          echo "Verifying headers before ZAP scan..."
+          curl -v --fail http://172.17.0.1:5000
+      
       - name: Run OWASP ZAP Baseline Scan
         run: |
-          # Create report files and ensure FULL permissions for the Docker container user
-          touch zap-report.html zap-report.json
-          chmod -R 777 .
+          # Create a dedicated directory for reports to ensure clean permissions
+          mkdir -p zap_reports
+          chmod 777 zap_reports
           
           echo "Pulling image: zaproxy/zap-stable"
           docker pull zaproxy/zap-stable
+          
+          # Mount ONLY the report directory to /zap/wrk/ to avoid permission conflicts
           docker run --rm --network="host" \
-            -v $(pwd):/zap/wrk/:rw \
+            -v $(pwd)/zap_reports:/zap/wrk/:rw \
             zaproxy/zap-stable zap-baseline.py \
             -t http://172.17.0.1:5000 \
             -r zap-report.html \
@@ -90,5 +97,5 @@ jobs:
         with:
           name: zap-scan-results
           path: |
-            zap-report.html
-            zap-report.json
+            zap_reports/zap-report.html
+            zap_reports/zap-report.json
