@@ -47,6 +47,10 @@ def sitemap():
 @app.after_request
 def add_security_headers(response):
     response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'"
+    response.headers['Server'] = 'DevSecOps-Server' # Obfuscate server info
     return response
 
 if __name__ == '__main__':
