@@ -38,7 +38,7 @@ jobs:
           path: bandit_results.json
 
   dast:
-    name: DAST (OWASP ZAP)
+    name: DAST (OWASP ZAP) - Fixed
     needs: sast
     runs-on: ubuntu-latest
     steps:
@@ -68,6 +68,7 @@ jobs:
 
       - name: Run OWASP ZAP Baseline Scan
         run: |
+          echo "Pulling image: zaproxy/zap-stable"
           docker pull zaproxy/zap-stable
           docker run --rm --network="host" \
             -v $(pwd):/zap/wrk/:rw \
