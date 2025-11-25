@@ -16,12 +16,7 @@ def greet(name):
     <html>
     <head>
         <title>DevSecOps Demo</title>
-        <style>
-            body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }}
-            .container {{ background-color: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }}
-            h1 {{ color: #1a73e8; }}
-            p {{ font-size: 1.2em; color: #333; }}
-        </style>
+        <link rel="stylesheet" href="/static/style.css">
     </head>
     <body>
         <div class="container">
@@ -50,8 +45,8 @@ def add_security_headers(response):
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     response.headers['X-Content-Type-Options'] = 'nosniff'
     
-    # Ultra-Strict CSP for ZAP compliance
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    # Ultra-Strict CSP for ZAP compliance (No unsafe-inline)
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
     
     # Explicitly set Server header to Apache to satisfy ZAP
     # Gunicorn respects this and won't overwrite it
