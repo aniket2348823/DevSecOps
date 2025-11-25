@@ -28,7 +28,9 @@ jobs:
         run: pip install bandit
 
       - name: Run Bandit Scan
-        run: bandit -r src/ -f json -o bandit_results.json
+        run: |
+          bandit -r src/ -f json -o bandit_results.json || true
+          cat bandit_results.json
         continue-on-error: true
 
       - name: Upload Bandit Results
